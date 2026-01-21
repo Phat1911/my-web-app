@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { loginSchema } from "@/schemas";
 import { login, register } from "../actions";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ import { useState } from "react";
 const Login = () => {
     const router = useRouter();
     const [error, setError] = useState <string>("");
+    const [isPending, setIsPending] = useState <boolean> (false);
     
     const form = useForm({
         resolver: zodResolver(loginSchema),
@@ -32,8 +33,9 @@ const Login = () => {
     });
 
     async function onSubmit(values: z.infer<typeof loginSchema>) {
+        setIsPending(true);
         const result = await login(values);
-
+        setIsPending(false);
         console.log(result.message);
 
         if (result.status === "success") {
@@ -85,8 +87,8 @@ const Login = () => {
                     />
                 </div>
 
-                <Button className="w-full cursor-pointer" type="submit">
-                    Log in
+                <Button disabled={isPending} className="w-full cursor-pointer" type="submit">
+                    { isPending ? "Loging in..." : "Log in" }
                 </Button>
                 <p className="flex justify-center">If don't have account, go to <Link href='/sign-up' className="ml-[5px] cursor-pointer underline text-blue-600"> Sign up ➡️</Link></p>
                 <p className="flex justify-center text-red-500">{error}</p>

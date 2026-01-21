@@ -12,13 +12,15 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { signupSchema } from "@/schemas";
 import { register } from "../actions";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const SignUp = () => {
   const router = useRouter();
+  const [isPending, setIsPending] = useState <boolean> (false);
   const form = useForm({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -29,7 +31,9 @@ const SignUp = () => {
   });
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
+    setIsPending(true);
     const result = await register(values);
+    setIsPending(false);
 
     console.log(result.message);
 
@@ -95,8 +99,8 @@ const SignUp = () => {
                 />
               </div>
 
-              <Button type="submit" className="w-full cursor-pointer" >
-                  Sign Up
+              <Button disabled={isPending} type="submit" className="w-full cursor-pointer" >
+                  { isPending ? "Signing in..." : "Sign in" }
               </Button>
             </form>
           </Form>
