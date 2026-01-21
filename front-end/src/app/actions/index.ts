@@ -1,0 +1,38 @@
+"use server";
+
+import { api } from "@/lib/axios";
+import { loginSchema, signupSchema } from "@/schemas";
+import { z } from "zod";
+
+async function register (values: z.infer<typeof signupSchema>) {
+  const result = signupSchema.safeParse(values);
+
+  if (!result.success) {
+    return { status: "error", message: result.error.message };
+  }
+
+  await api.post("/auth/register", {
+    name: values.name,
+    email: values.email,
+    password: values.password,
+  }); 
+
+  return { status: "success", message: "User created successfully" };
+}
+
+async function login (values: z.infer<typeof loginSchema>) {
+  const result = loginSchema.safeParse(values);
+
+  if (!result.success) {
+    return { status: "error", message: result.error.message };
+  }
+
+  await api.post("/auth/login", {
+    email: values.email,
+    password: values.password,
+  }); 
+
+  return { status: "success", message: "Login successfully" };
+}
+
+export { register, login };
