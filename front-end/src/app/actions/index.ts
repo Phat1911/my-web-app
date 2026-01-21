@@ -1,4 +1,4 @@
-"use server";
+"use client";
 
 import { api } from "@/lib/axios";
 import { loginSchema, signupSchema } from "@/schemas";
@@ -21,18 +21,23 @@ async function register (values: z.infer<typeof signupSchema>) {
 }
 
 async function login (values: z.infer<typeof loginSchema>) {
-  const result = loginSchema.safeParse(values);
+  try {
+    const result = loginSchema.safeParse(values);
 
-  if (!result.success) {
-    return { status: "error", message: result.error.message };
+    if (!result.success) {
+      return { status: "error", message: result.error.message };
+    }
+
+    await api.post("/auth/login", {
+      email: values.email,
+      password: values.password,
+    }, { withCredentials: true }); 
+
+    return { status: "success", message: "Login successfully" };
+  } catch(err: any) {
+    console.log(err);
+    return { status: "error", message: err.response?.data?.error || "Something went wrong", };
   }
-
-  await api.post("/auth/login", {
-    email: values.email,
-    password: values.password,
-  }); 
-
-  return { status: "success", message: "Login successfully" };
 }
 
 export { register, login };

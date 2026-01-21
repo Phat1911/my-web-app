@@ -17,9 +17,11 @@ import { loginSchema } from "@/schemas";
 import { login, register } from "../actions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
 
 const Login = () => {
     const router = useRouter();
+    const [error, setError] = useState <string>("");
     
     const form = useForm({
         resolver: zodResolver(loginSchema),
@@ -36,6 +38,8 @@ const Login = () => {
 
         if (result.status === "success") {
             router.push("/");
+        } else {
+            setError(result.message);
         }
     }
 
@@ -85,6 +89,7 @@ const Login = () => {
                     Log in
                 </Button>
                 <p className="flex justify-center">If don't have account, go to <Link href='/sign-up' className="ml-[5px] cursor-pointer underline text-blue-600"> Sign up ➡️</Link></p>
+                <p className="flex justify-center text-red-500">{error}</p>
                 </form>
             </Form>
             </CardContent>

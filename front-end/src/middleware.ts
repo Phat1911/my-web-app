@@ -1,11 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("jwt");
+  const token = req.cookies.get("jwt")?.value;
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/log-in", req.url));
-  } 
+  console.log(token);
+
+  if (!token && req.nextUrl.pathname !== "/log-in") {
+    const loginUrl = new URL("/log-in", req.url);
+    loginUrl.searchParams.set("redirect", req.nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
   return NextResponse.next();
 }
 
