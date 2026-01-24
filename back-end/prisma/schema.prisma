@@ -12,6 +12,7 @@ model User {
   name String
   email String @unique
   password String 
+  previewURL String @default("")
   score Int @default(0)
   createAt DateTime @default(now())
 

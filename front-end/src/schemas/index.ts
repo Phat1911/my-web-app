@@ -48,4 +48,20 @@ const loginSchema = z.object({
     ),
 });
 
-export { signupSchema, loginSchema };
+const updateSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must not exceed 50 characters")
+    .regex(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"),
+
+  email: z
+    .string()
+    .email("Invalid email address")
+    .refine((val) => val.endsWith("@gmail.com") || val.endsWith("@yahoo.com"), {
+      message: "Only Gmail and Yahoo emails are allowed",
+    }),
+
+}); 
+
+export { signupSchema, loginSchema, updateSchema };

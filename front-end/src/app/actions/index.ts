@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "@/lib/axios";
-import { loginSchema, signupSchema } from "@/schemas";
+import { loginSchema, signupSchema, updateSchema } from "@/schemas";
 import { z } from "zod";
 
 async function register (values: z.infer<typeof signupSchema>) {
@@ -43,4 +43,8 @@ async function login (values: z.infer<typeof loginSchema>) {
   }
 }
 
-export { register, login };
+async function updateProfile (values: z.infer<typeof updateSchema>) {
+  
+}
+
+export { register, login, updateProfile };

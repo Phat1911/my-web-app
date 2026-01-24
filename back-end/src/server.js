@@ -22,8 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API routes
-app.use("/auth", authRoutes);
-
+app.use("/auth", authRoutes);   
 
 const PORT = 5001;
 const server = app.listen(PORT, () => {

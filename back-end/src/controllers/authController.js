@@ -2,6 +2,9 @@ import { prisma } from "../config/db.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import jwt from "jsonwebtoken";
+import path from "path";
+import sharp from "sharp";
+import fs from "fs";
 
 const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -112,4 +115,74 @@ const findUser = async (req, res) => {
       }
 }
 
-export { register, login, logout, findUser };
+async function updateProfile (req, res) {
+    let token;
+    const {name, email} = req.body;
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        token = req.headers.authorization.split(" ")[1];
+      } else if (req.cookies?.jwt) {
+        token = req.cookies.jwt;
+      }
+    
+      if (!token) {
+        return res.status(401).json({ error: "Not authorized, no token provided" });
+      }
+    
+      try {
+
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          console.log(decoded.id);
+    
+        const user = await prisma.user.update({
+          where: { id: decoded.id },
+          data: { name: name, email: email },
+        });
+    
+        if (!user) {
+          return res.status(401).json({ error: "User no longer exists" });
+        }
+    
+        return res.status(200).json(user);
+      } catch (err) {
+        return res.status(401).json({ error: "Not authorized, token failed" });
+      }
+}
+
+async function updateAVT(req, res) {
+  const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+
+  if (!req.file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
+
+  const uploadDir = path.resolve("../front-end/public");
+
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+
+  const fileName = `${decoded.id}.jpg`;
+  const filePath = path.join(uploadDir, fileName);
+
+  await sharp(req.file.buffer)
+    .resize(256, 256)
+    .jpeg({ quality: 80 })
+    .toFile(filePath);
+
+  const avatarUrl = `/uploads/avatars/${fileName}`;
+
+  await prisma.user.update({
+    where: { id: decoded.id },
+    data: {
+      previewURL: avatarUrl, 
+    },
+  });
+
+  return res.status(200).json({
+    message: "Update successfully",
+    avatarUrl,
+  });
+}
+
+
+export { register, login, logout, findUser, updateProfile, updateAVT };
