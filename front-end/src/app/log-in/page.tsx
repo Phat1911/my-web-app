@@ -18,6 +18,7 @@ import { login, register } from "../actions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import { useInfoStore } from "@/store/useInfoStore";
 
 const Login = () => {
     const router = useRouter();
@@ -36,6 +37,8 @@ const Login = () => {
         setIsPending(true);
         const result = await login(values);
         setIsPending(false);
+        console.log(result);
+        useInfoStore.getState().setResult(result);
         console.log(result.message);
 
         if (result.status === "success") {

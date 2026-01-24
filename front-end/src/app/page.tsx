@@ -1,10 +1,11 @@
+import Sidebar from "@/components/ui/SideBar"
+
 const Home = () => {
 
   return (
-    <main>
-      <h1>Home</h1>
-      <p>Welcome to my webpage</p>
-    </main>
+    <div>
+      <Sidebar />
+    </div>
   )
 }
 

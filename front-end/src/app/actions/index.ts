@@ -17,7 +17,10 @@ async function register (values: z.infer<typeof signupSchema>) {
     password: values.password,
   }); 
 
-  return { status: "success", message: "User created successfully" };
+  return { 
+    status: "success", 
+    message: "User created successfully",
+  };
 }
 
 async function login (values: z.infer<typeof loginSchema>) {
@@ -33,7 +36,7 @@ async function login (values: z.infer<typeof loginSchema>) {
       password: values.password,
     }, { withCredentials: true }); 
 
-    return { status: "success", message: "Login successfully" };
+    return { status: "success", message: "Login successfully", email: values.email };
   } catch(err: any) {
     console.log(err);
     return { status: "error", message: err.response?.data?.error || "Something went wrong", };

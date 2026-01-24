@@ -1,6 +1,7 @@
 import { prisma } from "../config/db.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -78,4 +79,37 @@ const logout = async (req, res) => {
     });
 };
 
-export { register, login, logout };
+const findUser = async (req, res) => {
+    let token;
+    
+      if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        token = req.headers.authorization.split(" ")[1];
+      } else if (req.cookies?.jwt) {
+        token = req.cookies.jwt;
+      }
+    
+      if (!token) {
+        return res.status(401).json({ error: "Not authorized, no token provided" });
+      }
+    
+      try {
+
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          console.log(decoded.id);
+    
+        const user = await prisma.user.findUnique({
+          where: { id: decoded.id },
+          select: { id: true, name: true, email: true, score: true },
+        });
+    
+        if (!user) {
+          return res.status(401).json({ error: "User no longer exists" });
+        }
+    
+        return res.status(200).json(user);
+      } catch (err) {
+        return res.status(401).json({ error: "Not authorized, token failed" });
+      }
+}
+
+export { register, login, logout, findUser };
