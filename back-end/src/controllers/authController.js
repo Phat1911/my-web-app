@@ -102,7 +102,7 @@ const findUser = async (req, res) => {
     
         const user = await prisma.user.findUnique({
           where: { id: decoded.id },
-          select: { id: true, name: true, email: true, score: true },
+          select: { id: true, name: true, email: true, score: true, previewURL: true },
         });
     
         if (!user) {
@@ -157,9 +157,9 @@ async function updateAVT(req, res) {
 
   const uploadDir = path.resolve("../front-end/public");
 
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
+  // if (!fs.existsSync(uploadDir)) {
+  //   fs.mkdirSync(uploadDir, { recursive: true });
+  // }
 
   const fileName = `${decoded.id}.jpg`;
   const filePath = path.join(uploadDir, fileName);
@@ -169,18 +169,13 @@ async function updateAVT(req, res) {
     .jpeg({ quality: 80 })
     .toFile(filePath);
 
-  const avatarUrl = `/uploads/avatars/${fileName}`;
-
   await prisma.user.update({
-    where: { id: decoded.id },
-    data: {
-      previewURL: avatarUrl, 
-    },
+    where: {id: decoded.id},
+    data: {previewURL: fileName},
   });
 
   return res.status(200).json({
     message: "Update successfully",
-    avatarUrl,
   });
 }
 

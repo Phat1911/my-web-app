@@ -7,17 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { updateProfile } from "../actions";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 
 const Profile = () => {
-    const [user, setUser] = useState <any> ({
-        name: "...",
-        score: "...",
-        email: "...",
-    });
     const form = useForm({
         resolver: zodResolver(updateSchema),
         defaultValues: {
@@ -25,22 +18,18 @@ const Profile = () => {
             email: "...",
         },
     });
-    const [file, setFile] = useState <File | null> (null);
     const [isPending, setIsPending] = useState <boolean> (false);
     const [url, setURL] = useState <string> ("");
     const [st, setSt] = useState <number>(0);
-    const [mark, setMark] = useState <boolean>(false);
-    const previewURL = file ? URL.createObjectURL(file) : "";
+    const [sc, setSc] = useState <string>("...");
+    const [mark, setMark] = useState <[boolean, boolean]>([false, false]);
 
     useEffect(() => {
-        console.log(123);
         async function findUser() {
             try {
-                const res = await api.get("/auth/me", {
-                    withCredentials: true,
-                });
+                const res = await api.get("/auth/me");
 
-                setUser(res.data); 
+                setSc(res.data.score as string);
                 setURL(res.data.previewURL);
                 form.reset({
                     name: res.data.name,
@@ -66,7 +55,7 @@ const Profile = () => {
             await api.post("/auth/update", {
                 name: values.name,
                 email: values.email,
-            }, { withCredentials: true });
+            });
             setIsPending(false);
             setSt(st + 1);
             return { status: "success" };
@@ -81,13 +70,14 @@ const Profile = () => {
         
         const formData = new FormData();
         formData.append("previewURL", file);
+        setMark([false, true]);
         await api.post("/auth/updateAvt", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             }, 
         });
-        setMark(true);
         setSt((st) => st + 1);
+        setMark([true, false]);
     }
 
     return (
@@ -95,8 +85,12 @@ const Profile = () => {
             <Form {...form}>
                 <div className="flex bg-black justify-center items-center">
                     <div className="ml-[30px] flex flex-col items-center justify-center rounded-lg shadow-2xl">
-                        {url !== "" ? <img src="867c66c0-360b-4dba-82b9-80f82710d73c.jpg" alt="" width={150} /> : <div className="text-[9rem] ">🙍</div>}
-                        <input type="file" id="file" className="hidden" onChange={handleChange} />
+                        {
+                            url === "" ? <img src="avt.jpg" width={150} /> : (
+                                mark[1] ? <div className="text-white">Updating...</div> : <img src={url} width={150} />
+                            )
+                        }
+                        <input type="file" id="file" className="hidden" disabled={mark[1]} onChange={handleChange} />
                         <label htmlFor="file" className="text-[1.8rem] cursor-pointer">📷</label>
                     </div>
                     <form className="space-y-4 text-white font-bold p-[50px]" onSubmit={form.handleSubmit(onSubmit)}>
@@ -135,14 +129,14 @@ const Profile = () => {
                         />
                     </div>
                     
-                    <div>Score: {user?.score}</div>
+                    <div>Score: {sc}</div>
                     <Button disabled={isPending} className="w-full cursor-pointer" type="submit">
                         { isPending ? "Updating..." : "Update" }
                     </Button>
                     </form>
                 </div>
             </Form>
-                    { mark && <p className="text-white">Updated! Refresh to see the difference</p> }
+            {mark[0] && <p className="text-white">Updated, Refresh to see the difference</p>}
         </div>
     )
 }
