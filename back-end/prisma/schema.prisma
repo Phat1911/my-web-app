@@ -21,6 +21,15 @@ model User {
   favMovies Movie[] @relation("Fan") 
 }
 
+model Game {
+  id String @id @default(uuid())
+  title String
+  image String 
+  value Float
+  updateAt DateTime @default(now()) 
+  createAt DateTime @default(now())
+}
+
 model Movie {
   id String @id @default(uuid())
   title String
