@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container{
+    position: relative;
+    background-color: black;
+    height: 100vh;
+}
+div {
+    width: 25px;
+    height: 25px;
+}
+.food{
+    z-index: 999;
+    border-radius: 100%;
+    background-color: red;
+    position: fixed;
+}
+.container > div {
+    position: absolute;
+    background-color: green;
+}
+.score{
+    position: fixed;
+    width: 500px;
+    height: 20px;
+    transform: translate(1px, 2px);
+    z-index: 999;
+    color: white;
+    font-size: 2rem;
+    font-family: sans-serif;
+}
+.gameover{
+    width: 500px;
+    height: 200px;
+    position: fixed;
+    color: red;
+    transform: translate(600px, 300px);
+    font-family: cursive;
+    font-size: 5rem;
+    font-weight: bold;
+}

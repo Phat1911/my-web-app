@@ -8,6 +8,7 @@ import Responsible from "@/components/ui/responsible";
 import Link from "next/link"
 import { useState } from "react"
 import { motion } from "motion/react"
+import Ranking from "@/components/ui/ranking";
 
 const page = () => {
   const [st, setSt] = useState <number> (0);
@@ -27,10 +28,51 @@ const page = () => {
         }}
       >
         <ul className="space-y-2 bg-black h-screen flex flex-col items-start w-full w-[150px]">
-          <Button className="cursor-pointer" onClick={() => setSt(0)}>Home</Button>
-          <Button className="cursor-pointer" onClick={() => setSt(1)}>Profile</Button>
-          <Button className="cursor-pointer" onClick={() => setSt(2)}>Games</Button>
-          <Button className="cursor-pointer" onClick={() => setSt(3)}>Responsible</Button>
+          <Button
+            className={`cursor-pointer bg-transparent hover:bg-transparent
+              ${st === 0 ? "underline underline-offset-4 text-white" : "text-gray-400"}
+            `}
+            onClick={() => setSt(0)}
+          >
+            Home
+          </Button>
+
+          <Button
+            className={`cursor-pointer bg-transparent hover:bg-transparent
+              ${st === 1 ? "underline underline-offset-4 text-white" : "text-gray-400"}
+            `}
+            onClick={() => setSt(1)}
+          >
+            Profile
+          </Button>
+
+          <Button
+            className={`cursor-pointer bg-transparent hover:bg-transparent
+              ${st === 2 ? "underline underline-offset-4 text-white" : "text-gray-400"}
+            `}
+            onClick={() => setSt(2)}
+          >
+            Games
+          </Button>
+
+          <Button
+            className={`cursor-pointer bg-transparent hover:bg-transparent
+              ${st === 3 ? "underline underline-offset-4 text-white" : "text-gray-400"}
+            `}
+            onClick={() => setSt(3)}
+          >
+            Responsible
+          </Button>
+
+          <Button
+            className={`cursor-pointer bg-transparent hover:bg-transparent
+              ${st === 4 ? "underline underline-offset-4 text-white" : "text-gray-400"}
+            `}
+            onClick={() => setSt(4)}
+          >
+            Ranking
+          </Button>
+
         </ul>
 
         <motion.div className="rounded-full bg-gray-200 flex justify-center items-center h-[30px] text-black p-[10px] cursor-pointer"
@@ -40,11 +82,12 @@ const page = () => {
         >{"<"}</motion.div>
       </motion.div>
 
-      <div className="bg-red-500 w-screen h-screen">
+      <div className="bg-black w-screen h-screen">
         { st === 0 && <Home /> }
         { st === 1 && <Profile /> }
         { st === 2 && <Games /> }
         { st === 3 && <Responsible /> }
+        { st === 4 && <Ranking /> }
       </div>
     </div>
   )

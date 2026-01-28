@@ -16,13 +16,13 @@ const games = [
     {
         title: "Car Game",
         image: "https://is1-ssl.mzstatic.com/image/thumb/Purple3/v4/92/f4/1a/92f41a31-8ba5-4d6e-b1da-460de919016d/source/512x512bb.jpg",
-        value: 0.2,
+        value: 0.3,
     },
 
     {
         title: "Flappy Bird",
         image: "https://media.vneconomy.vn/images/upload/2021/04/21/Flappy-Bird33167.jpg",
-        value: 0.3,
+        value: 0.4,
     }
 ]
 

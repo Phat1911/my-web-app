@@ -148,6 +148,25 @@ async function updateProfile (req, res) {
       }
 }
 
+async function updateScore(req, res) {
+  const { score } = req.body;
+  const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+
+  const user = await prisma.user.findUnique({
+    where: {id: decoded.id},
+    select: {score: true},
+  })
+
+  await prisma.user.update({
+    where: {id: decoded.id},
+    data: {score: user.score + score},
+  });
+
+  return res.status(200).json({
+    message: "Update successfully",
+  });
+}
+
 async function updateAVT(req, res) {
   const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
 
@@ -179,5 +198,12 @@ async function updateAVT(req, res) {
   });
 }
 
-
-export { register, login, logout, findUser, updateProfile, updateAVT };
+async function getAll(req, res) {
+    const users = await prisma.user.findMany({
+      // select: {name: true, score: true},
+      orderBy: { score: "desc" },
+    });
+    
+    return res.status(200).json(users);
+}
+export { register, login, logout, findUser, updateProfile, updateAVT, updateScore, getAll };

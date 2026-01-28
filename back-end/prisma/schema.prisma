@@ -13,7 +13,7 @@ model User {
   email String @unique
   password String 
   previewURL String @default("")
-  score Int @default(0)
+  score Float @default(0)
   createAt DateTime @default(now())
 
   watchlistItems WatchListItem[]
@@ -22,7 +22,7 @@ model User {
 }
 
 model Game {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
   title String
   image String 
   value Float
