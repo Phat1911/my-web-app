@@ -1,0 +1,61 @@
+.content > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box, .content{
+    /* position: absolute; */
+    overflow: hidden;
+}
+.container{
+    background-color: rgba(0, 0, 0, 0.824);
+    height: 100vh;
+    padding: 40px 40px;
+    color: white;
+}
+.intro {
+    display: flex;
+    
+    /* justify-content: center; */
+}
+.box{
+    width: 300px;
+    height: 300px;
+    background-color: black;
+    box-shadow: 0px 0px 5px white;
+}
+.circle{
+    transform: translate(-75px, -75px);
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    background: conic-gradient(
+    from 45deg,
+    rgb(241, 104, 104) 0deg 90deg,
+    rgb(111, 111, 228) 90deg 180deg,
+    rgb(115, 236, 115) 180deg 270deg,
+    rgb(233, 233, 108) 270deg 360deg
+    );
+}
+.content{
+    background-color: black;
+    width: 290px;
+    height: 290px;
+    z-index: 9999;
+    transform: translate(5px, -445px);
+    font-size: 2rem;
+    color: white;
+    position: relative;
+}
+.content > div { 
+    width: 290px;
+    height: 290px;
+    position: absolute;
+    flex-direction: column; 
+    top: 0;
+}
+.content img {
+    width: 80%;
+    height: 90%;
+    flex-shrink: 0;
+}

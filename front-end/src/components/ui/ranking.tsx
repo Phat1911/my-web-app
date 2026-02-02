@@ -29,7 +29,7 @@ const Ranking = () => {
                             users.map((u: any, id: number) => (
                                 <tr key={id} className="">
                                     <td className="">{id + 1}</td>
-                                    <td className="">{u.name}</td>
+                                    <td className="flex items-center"><img className="mr-[10px]" src={u.previewURL || `avt.jpg`} width={40} /><div className="font-bold mr-[200px]">{u.name}</div></td>
                                     <td className="">{u.score}</td>
                                 </tr>
                             ))

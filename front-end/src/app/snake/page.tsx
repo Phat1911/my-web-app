@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import "./snake.css";
+import styles from "./snake.module.css";
 import { api } from "@/lib/axios";
+import { updateScore } from "../actions";
 
 export default function SnakePage() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -55,17 +56,11 @@ export default function SnakePage() {
       sc++;
     }
 
-    async function updateScore () {
-        const user = await api.get("game/2");
-        console.log(sc, user.data.value);
-        await api.post("/auth/updateSc", {score: sc * user.data.value});
-    }
-
     async function gameover() {
         Gameover.style.zIndex = "9999";
         clearInterval(run);
         clearInterval(collision);
-        await updateScore();
+        await updateScore(sc, 2);
     }
 
     function checkCollision() {
@@ -144,16 +139,16 @@ export default function SnakePage() {
   }, []);
 
   return (
-    <>
-      <div className="score" ref={scoreRef} />
-      <div className="gameover" ref={gameoverRef}>Game Over</div>
-      <div className="food" ref={foodRef} />
+    <div className={styles.boss}>
+      <div className={styles.score} ref={scoreRef} />
+      <div className={styles.gameover} ref={gameoverRef}>Game Over</div>
+      <div className={styles.food} ref={foodRef} />
 
-      <section className="container" ref={containerRef}>
+      <section className={styles.container} ref={containerRef}>
         <div style={{ top: "0px" }} />
         <div style={{ top: "25px" }} />
         <div style={{ top: "50px", backgroundColor: "lime" }} />
       </section>
-    </>
+    </div>
   );
 }

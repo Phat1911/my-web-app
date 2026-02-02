@@ -47,4 +47,9 @@ async function updateProfile (values: z.infer<typeof updateSchema>) {
   
 }
 
-export { register, login, updateProfile };
+async function updateScore (sc: number, type: number) {
+    const user = await api.get(`game/${type}`);
+    await api.post("/auth/updateSc", {score: sc * user.data.value});
+}
+
+export { register, login, updateProfile, updateScore };

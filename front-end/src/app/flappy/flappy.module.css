@@ -1,0 +1,57 @@
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+.parent {
+    overflow: hidden;
+}
+.boss {
+    background-color: black;
+}
+.container{
+    width: 700px;
+    height: 500px;
+    display: flex;
+    position: relative;
+    z-index: 999;
+}
+.container  img {
+    width: 1150px;
+    height: 500px; 
+}
+.container > div { 
+    width: 1150px;
+    position: absolute; 
+}
+.bird {
+    position: absolute;
+    z-index: 9999;
+    transition: 150ms linear;
+    transform-origin: 50% 50%;
+    top: 250px; left: 580px;
+
+}
+.score{
+    position: fixed;
+    width: 300px;
+    height: 20px;
+    transform: translate(420px, 2px);
+    z-index: 999;
+    color: white;
+    font-size: 2rem;
+    font-family: sans-serif;
+}
+.gameover{
+    width: 650px;
+    height: 200px;
+    position: fixed;
+    color: red;
+    transform: translate(430px, 150px);
+    font-family: cursive;
+    font-size: 4rem;
+    font-weight: bold;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+}
