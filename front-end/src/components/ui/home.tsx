@@ -56,7 +56,6 @@ const Home = () => {
 
     return () => {
       clearInterval(run);
-      // clearInterval(run1);
     }
   }, []);
 
@@ -78,7 +77,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="font-bold mt-[60px] text-[1.3rem] p-[0px_150px]">
+      <div className="mt-[60px] text-[1.3rem] p-[0px_150px]">
         Hello my beautiful user! <br /> <br />
         In this web app, you will complete tasks (playing games in the Games section to earn a certain number of 
         points), which you will receive from the Responsible section every hour (since you logged in). <br /> <br />
