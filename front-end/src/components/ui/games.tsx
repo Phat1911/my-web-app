@@ -14,11 +14,12 @@ const Game = () => {
         }
 
         getAllGames();
-        console.log("Completed");
     }, []);
 
     return (
-        <div className="text-white w-full p-[60px_60px] ">
+        <div className="text-white w-full space-y-4 p-[60px_60px] ">
+            <h1 className="text-[1.4rem]">If you see game what you choose has a bad experience, please reload page for better experience, thank you 😊💖</h1>
+            <div className="text-[1.4rem]">🎮Game:</div>
             {games ? <div className="flex space-x-10 flex-wrap">
                 {
                     games.map((g: any, id: number) => (
@@ -26,7 +27,7 @@ const Game = () => {
                             <img src={g.image} width={150} />
                             <p>{g.title}</p>
                             <p>Value: {g.value}</p> 
-                            { id == 2 && <p>Number of minutes * value</p> }
+                            <p>Score = {id == 2 ? "Minutes * value" : "Score * value"}</p>
                         </Link >
                     ))
                 }

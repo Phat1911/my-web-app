@@ -1,0 +1,76 @@
+.game {
+    width: 3090px;
+    height: 100vh;
+    display: flex;
+    background-color: black;
+    transform: translateX(-1029px); 
+}
+.section {
+    width: 1030px;
+    height: 100vh;
+}
+.section > div{
+    display: flex;
+    flex-direction: column;
+    width: 50px;
+}
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.center > img{
+    transform-origin: 50% 50%;
+    transition: linear;
+}
+.section:not(.center) { position: relative; }
+.section > div:not(.center) > div > div{
+    position: absolute;
+    top: 0.9px;
+    width: 13.2px;
+    height: 2.6px;
+}
+.in4{
+    z-index: 9999;
+    position: fixed;
+    transform: translate(10px, 10px);
+    font-family: sans-serif;
+    color: white;
+}
+.blood{
+    width: 201.34px;
+    height: 25px;
+    border: 2px solid white;
+    display: flex;
+    position: relative;
+}
+.blood > div {
+    background-color: red;
+    transition: 1s linear;
+    position: absolute;
+    top: 2px;
+    width: 50px;
+    height: 18;
+}
+.bullet{
+    width: 5px;
+    height: 5px;
+    border-radius: 100%;
+    background-color: white;
+    position: absolute;
+    top: 0px;
+    left: 45px;
+    transition: 1s linear;
+}
+.player{ 
+    position: relative; 
+    top: 300px;
+    left: 700px;
+}
+.gameover{
+    position: fixed;
+    font-family: cursive;
+    transform: translate(400px, 200px);
+    color: red;
+    font-size: 2rem;
+}

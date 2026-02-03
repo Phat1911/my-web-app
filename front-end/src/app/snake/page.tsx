@@ -114,10 +114,10 @@ export default function SnakePage() {
 
     const handleKey = (e: KeyboardEvent) => {
       let res = -1;
-      if (e.key === "s") res = 0;
-      if (e.key === "d") res = 1;
-      if (e.key === "w") res = 2;
-      if (e.key === "a") res = 3;
+      if (e.key === "ArrowDown") res = 0;
+      if (e.key === "ArrowRight") res = 1;
+      if (e.key === "ArrowUp") res = 2;
+      if (e.key === "ArrowLeft") res = 3;
 
       if (res !== -1) {
         const locate = body[len - 1].getBoundingClientRect();

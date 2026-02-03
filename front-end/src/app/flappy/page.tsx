@@ -9,7 +9,6 @@ const FlappyBird = () => {
     const scoreRef = useRef <HTMLDivElement | null> (null);
     const gameoverRef = useRef <HTMLDivElement | null> (null);
     const birdRef = useRef <HTMLImageElement | null> (null);
-    const soundRef = useRef <HTMLDivElement | null> (null);
     const divRef = useRef <HTMLDivElement | null> (null);
 
     useEffect(() => {

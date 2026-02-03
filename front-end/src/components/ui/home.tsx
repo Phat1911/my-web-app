@@ -77,14 +77,17 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="mt-[60px] text-[1.3rem] p-[0px_150px]">
+      <div className="mt-[20px] text-[1.3rem] p-[0px_120px]">
         Hello my beautiful user! <br /> <br />
         In this web app, you will complete tasks (playing games in the Games section to earn a certain number of 
         points), which you will receive from the Responsible section every hour (since you logged in). <br /> <br />
         Completing a task will earn you 10 points. Besides completing tasks, you can also play games in the Games 
         section to accumulate more points. The points you earn from playing those games (not part of assigned tasks)
-         will be your value * score. If you accumulate many points, you will be displayed on the leaderboard and become a top player
+        will be your value * score. If you accumulate many points, you will be displayed on the leaderboard and become a top player <br /> <br />
+        Snake game, Flappy Bird, Car Game: using the arrow keyboard to adjust the direction.  <br />
+        Space game: using the arrow left and arrow right to adjust the rotation of rocket. Use the 's' key to move forward, use the 'd' key to shoot
       </div>
+
     </section>
 
   )

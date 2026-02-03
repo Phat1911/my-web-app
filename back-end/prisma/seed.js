@@ -4,7 +4,7 @@ const games = [
     {
         title: "Space rocket",
         image: "https://cf.geekdo-images.com/V9TCGOguxWnFkb43q-T3fQ__itemrep/img/l61t9tnw93KGlEgD-29z9PGnY-0=/fit-in/246x300/filters:strip_icc()/pic6608652.jpg",
-        value: 0.2,
+        value: 0.25,
     },
 
     {

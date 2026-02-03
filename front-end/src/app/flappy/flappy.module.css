@@ -37,7 +37,7 @@
     width: 300px;
     height: 20px;
     transform: translate(420px, 2px);
-    z-index: 999;
+    z-index: 9999;
     color: white;
     font-size: 2rem;
     font-family: sans-serif;
