@@ -206,4 +206,18 @@ async function getAll(req, res) {
     
     return res.status(200).json(users);
 }
-export { register, login, logout, findUser, updateProfile, updateAVT, updateScore, getAll };
+
+async function getAllByName(req, res) {
+  const users = await prisma.user.findMany({
+    where: {
+      name: {
+        contains: req.params.name,
+        mode: "insensitive"
+      }
+    }
+  });
+
+  return res.status(200).json(users);
+}
+
+export { register, login, logout, findUser, updateProfile, updateAVT, updateScore, getAll, getAllByName };

@@ -15,7 +15,7 @@ const page = () => {
   const [mark, setMark] = useState <boolean> (false);
 
   return (
-    <div className="flex items-center bg-[#1A1A1A] space-x-2 ">
+    <div className="flex  bg-[#1A1A1A] space-x-2 ">
       <motion.div 
         className="bg-[#1A1A1A] space-x-2 h-screen flex items-center justify-between w-[150px] text-white font-bold pt-[10px]"
         animate={ !mark ? {
@@ -82,7 +82,7 @@ const page = () => {
         >{"<"}</motion.div>
       </motion.div>
 
-      <div className="bg-black w-screen h-screen">
+      <div className="bg-black w-screen min-h-screen">
         { st === 0 && <Home /> }
         { st === 1 && <Profile /> }
         { st === 2 && <Games /> }
