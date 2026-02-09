@@ -9,16 +9,48 @@ datasource db {
 
 model User {
   id String @id @default(uuid())
+  number Int @default(autoincrement())
   name String
   email String @unique
   password String 
   previewURL String @default("")
   score Float @default(0)
   createAt DateTime @default(now())
+  lastTaskAssigned DateTime?
 
+  followed Int[] @default([])
+  following String[] @default([])
   watchlistItems WatchListItem[]
   movies Movie[] @relation("MovieCreator")
   favMovies Movie[] @relation("Fan") 
+  tasks Task[]
+  sentMessages Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+}
+
+model Task {
+  id String @id @default(uuid())
+  userId String
+  gameId Int
+  targetScore Float
+  completed Boolean @default(false)
+  assignedAt DateTime @default(now())
+  completedAt DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id String @id @default(uuid())
+  senderId String
+  receiverId String
+  content String
+  read Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  sender User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
 }
 
 model Game {
@@ -28,6 +60,7 @@ model Game {
   value Float
   updateAt DateTime @default(now()) 
   createAt DateTime @default(now())
+  tasks Task[]
 }
 
 model Movie {

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "followed" INTEGER[] DEFAULT ARRAY[]::INTEGER[],
+ADD COLUMN     "number" SERIAL NOT NULL;

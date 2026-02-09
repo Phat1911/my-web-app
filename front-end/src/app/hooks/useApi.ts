@@ -3,7 +3,9 @@ import { useState } from "react";
 export function useApi<T>() {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(false);
+    const [loading1, setLoading1] = useState(false);
     const [error, setError] = useState<any>(null);
+    const [error1, setError1] = useState<any>(null);
 
     const request = async (apiCall: () => Promise<T>) => {
         setLoading(true);

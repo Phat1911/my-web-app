@@ -3,6 +3,8 @@ import { config } from "dotenv";
 import { connectDB, disConnectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import gameRoutes from "./routes/gameRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -24,7 +26,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // API routes
 app.use("/auth", authRoutes);   
-app.use("/game", gameRoutes);   
+app.use("/game", gameRoutes);
+app.use("/task", taskRoutes);
+app.use("/chat", chatRoutes);
 
 const PORT = 5001;
 const server = app.listen(PORT, () => {

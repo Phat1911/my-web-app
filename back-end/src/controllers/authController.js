@@ -102,7 +102,7 @@ const findUser = async (req, res) => {
     
         const user = await prisma.user.findUnique({
           where: { id: decoded.id },
-          select: { id: true, name: true, email: true, score: true, previewURL: true },
+          select: { id: true, name: true, email: true, score: true, previewURL: true, following: true },
         });
     
         if (!user) {
@@ -220,4 +220,44 @@ async function getAllByName(req, res) {
   return res.status(200).json(users);
 }
 
-export { register, login, logout, findUser, updateProfile, updateAVT, updateScore, getAll, getAllByName };
+async function updateFollowed(req, res) {
+  const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+
+  const user = await prisma.user.findUnique({
+    where: { id: req.body.id },
+    select: { followed: true },
+  });
+
+  if (user.followed.includes(decoded.num)) {
+    await prisma.user.update({
+      where: { id: req.body.id },
+      select: { followed: user.followed.filter(f => f != decoded.num) },
+    })
+    return res.status(200);
+  }
+
+  await prisma.user.update({
+    where: { id: req.body.id },
+    select: { followed: [...user.followed, decoded.num] },
+  })
+
+  return res.status(200);
+}
+
+async function getFollowing(req, res) {
+  const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+
+  const users = await prisma.user.findMany({
+    where: {
+      followed: {
+        has: decoded.num,
+      },
+    },
+  });
+
+  return res.status(200).json(users);
+}
+
+export { register, login, logout, findUser, updateProfile, updateAVT, updateScore, getAll, getAllByName,
+  updateFollowed, getFollowing
+};
