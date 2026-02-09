@@ -31,44 +31,61 @@ const Responsible = () => {
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<Task[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [completing, setCompleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchCurrentTask();
-    fetchHistory();
+    let mounted = true;
+    const load = async () => {
+      try {
+        const [taskRes, histRes] = await Promise.all([
+          api.get("/task/current"),
+          api.get("/task/history"),
+        ]);
+        if (mounted) {
+          setTaskData(taskRes.data);
+          setCountdown(Math.max(0, taskRes.data.timeRemaining || 0));
+          setHistory(histRes.data || []);
+        }
+      } catch (err) {
+        if (mounted) setError("Failed to load tasks");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    load();
+    return () => { mounted = false; };
   }, []);
 
   useEffect(() => {
-    if (countdown > 0) {
-      const timer = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            fetchCurrentTask();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [countdown]);
+    if (countdown <= 0) return;
+    const timer = setInterval(() => {
+      setCountdown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [countdown > 0]);
 
-  const fetchCurrentTask = async () => {
+  const completeTask = async () => {
+    if (!taskData?.task || completing) return;
+    setCompleting(true);
     try {
-      setLoading(true);
-      const res = await api.get("/task/current");
-      setTaskData(res.data);
-      setCountdown(res.data.timeRemaining);
+      const res = await api.post("/task/complete", { taskId: taskData.task.id });
+      if (res.data.success) {
+        setTaskData({ ...taskData, task: null, message: "Task completed! +10 points" });
+        const histRes = await api.get("/task/history");
+        setHistory(histRes.data || []);
+      }
     } catch (err) {
-      console.error(err);
+      setError("Failed to complete task");
     } finally {
-      setLoading(false);
+      setCompleting(false);
     }
   };
 
   const fetchHistory = async () => {
     try {
       const res = await api.get("/task/history");
-      setHistory(res.data);
+      setHistory(res.data || []);
     } catch (err) {
       console.error(err);
     }
@@ -154,15 +171,26 @@ const Responsible = () => {
                   </div>
                 </div>
 
-                <Link href={getGamePath(taskData.task.game.title)}>
+                <div className="flex gap-4 mt-6">
+                  <Link href={getGamePath(taskData.task.game.title)}>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-lg shadow-lg hover:shadow-purple-500/25 transition-shadow"
+                    >
+                      Play Now
+                    </motion.button>
+                  </Link>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="mt-6 px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-lg shadow-lg hover:shadow-purple-500/25 transition-shadow"
+                    onClick={completeTask}
+                    disabled={completing}
+                    className="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl font-bold text-lg shadow-lg hover:shadow-green-500/25 transition-shadow disabled:opacity-50"
                   >
-                    Play Now
+                    {completing ? "Completing..." : "Complete Task"}
                   </motion.button>
-                </Link>
+                </div>
               </div>
             </div>
 
